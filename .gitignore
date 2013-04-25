@@ -1,0 +1,8 @@
+*.swp
+*.log
+docs
+*.zip
+plugin.xml
+target
+web-app
+.settings
