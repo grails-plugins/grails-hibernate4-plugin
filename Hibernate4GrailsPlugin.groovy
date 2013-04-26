@@ -34,6 +34,7 @@ class Hibernate4GrailsPlugin {
 	def loadAfter = ['controllers', 'domainClass']
 	def watchedResources = ['file:./grails-app/conf/hibernate/**.xml']
 	def artefacts = [AnnotationDomainClassArtefactHandler]
+	def pluginExcludes = ['src/templates/**']
 
 	def license = 'APACHE'
 	def organization = [name: 'SpringSource', url: 'http://www.springsource.org/']
