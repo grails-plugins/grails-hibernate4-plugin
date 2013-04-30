@@ -62,7 +62,7 @@ class NaturalBook2 {
 		}
 	}
 
-	void testMutalbeNaturalIdentifier() {
+	void testMutableNaturalIdentifier() {
 		def Book = ga.getDomainClass("NaturalBook2").clazz
 		def Author = ga.getDomainClass("NaturalAuthor").clazz
 
