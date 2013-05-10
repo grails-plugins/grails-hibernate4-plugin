@@ -314,58 +314,65 @@ class AssociationBindingAuthor {
 		assertEquals 11, b2.pages[0].number
 	}
 
-	void testOneToManyBindingWithSubscriptOperatorAndNewInstance() {
-		buildMockRequest()
-		def Author = ga.getDomainClass("AssociationBindingAuthor").clazz
+    void testOneToManyBindingWithSubscriptOperatorAndNewInstance() {
+        super.buildMockRequest()
+        def Author = ga.getDomainClass("AssociationBindingAuthor").clazz
 
-		def author = Author.newInstance(name:"Stephen King")
+        def author = Author.newInstance(name:"Stephen King")
 
-		def request = new MockHttpServletRequest()
-		request.addParameter("books[0].title", "The Shining")
-		request.addParameter("books[0].pages[0].number", "1")
-		request.addParameter("books[0].pages[1].number", "2")
-		request.addParameter("books[0].pages[2].number", "3")
-		request.addParameter("books[0].reviewers['fred'].name", "Fred Bloggs")
-		request.addParameter("books[0].reviewers['bob'].name", "Bob Bloggs")
-		request.addParameter("books[0].reviewers['chuck'].name", "Chuck Bloggs")
-		request.addParameter("books[1].title", "The Stand")
+        def request = new MockHttpServletRequest()
+        request.addParameter("books[0].title", "The Shining")
+        request.addParameter("books[0].pages[0].number", "1")
+        request.addParameter("books[0].pages[1].number", "2")
+        request.addParameter("books[0].pages[2].number", "3")
+        request.addParameter("books[0].reviewers['fred'].name", "Fred Bloggs")
+        request.addParameter("books[0].reviewers['bob'].name", "Bob Bloggs")
+        request.addParameter("books[0].reviewers['chuck'].name", "Chuck Bloggs")
+        request.addParameter("books[1].title", "The Stand")
 
-		author.properties = request
+        author.properties = request
 
-		def books = author.books.iterator()
-		def b1 = books.next()
-		def b2 = books.next()
+        def books = author.books
+        def theShining = books.find { it.title == 'The Shining' }
+        assertNotNull theShining
+        
+        assertEquals 3, theShining.pages.size()
+        
+        assertEquals 1, theShining.pages[0].number
+        assertEquals 2, theShining.pages[1].number
+        assertEquals 3, theShining.pages[2].number
+        
+        assertEquals 3, theShining.reviewers.size()
+        
+        assertEquals 'Fred Bloggs', theShining.reviewers['fred'].name
+        assertEquals 'Bob Bloggs', theShining.reviewers['bob'].name
+        assertEquals 'Chuck Bloggs', theShining.reviewers['chuck'].name
+        
+        def theStand = books.find { it.title == 'The Stand' }
+        assertNotNull theStand
 
-		assertEquals "The Shining", b1.title
-		assertEquals 3, b1.pages.size()
-		assertEquals 1, b1.pages[0].number
-		assertEquals 2, b1.pages[1].number
-		assertEquals 3, b1.pages[2].number
+        assertNotNull "author should have saved", author.save(flush:true)
 
-		assertEquals 3, b1.reviewers.size()
-		assertEquals "Fred Bloggs", b1.reviewers['fred'].name
-		assertEquals "The Stand", b2.title
+        session.clear()
 
-		assertNotNull "author should have saved", author.save(flush:true)
+        author = Author.get(1)
+        assertEquals 2, author.books.size()
 
-		session.clear()
+        theShining = author.books.find { it.title == 'The Shining'}
+        assertNotNull theShining
 
-		author = Author.get(1)
-		assertEquals 2, author.books.size()
+        assertEquals "The Shining", theShining.title
+        assertEquals 3, theShining.pages.size()
+        assertEquals 1, theShining.pages[0].number
+        assertEquals 2, theShining.pages[1].number
+        assertEquals 3, theShining.pages[2].number
 
-		b1 = author.books.find { it.title == 'The Shining'}
-		assertNotNull b1
-
-		assertEquals "The Shining", b1.title
-		assertEquals 3, b1.pages.size()
-		assertEquals 1, b1.pages[0].number
-		assertEquals 2, b1.pages[1].number
-		assertEquals 3, b1.pages[2].number
-
-		assertEquals 3, b1.reviewers.size()
-		assertEquals "Fred Bloggs", b1.reviewers['fred'].name
-		assertEquals "The Stand", b2.title
-	}
+        assertEquals 3, theShining.reviewers.size()
+        assertEquals "Fred Bloggs", theShining.reviewers['fred'].name
+        
+        theStand = author.books.find { it.title == 'The Stand' }
+        assertEquals "The Stand", theStand.title
+    }
 
 	void testOneToManyBindingWithAnArrayOfStrings() {
 		buildMockRequest()
