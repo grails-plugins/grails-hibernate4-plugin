@@ -1,12 +1,15 @@
 grails.project.work.dir = 'target'
 
+forkConfig = false
 grails.project.fork = [
-	test: false,
-	run: false,
-	console: false
+	test:    forkConfig, // configure settings for the test-app JVM
+	run:     forkConfig, // configure settings for the run-app JVM
+	war:     forkConfig, // configure settings for the run-war JVM
+	console: forkConfig, // configure settings for the Swing console JVM
+	compile: forkConfig  // configure settings for compilation
 ]
 
-grails.project.dependency.resolver = "ivy" // or maven
+grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {
 
 	inherits "global"
@@ -14,7 +17,6 @@ grails.project.dependency.resolution = {
 
 	repositories {
 		grailsCentral()
-		mavenLocal()
 		mavenRepo "http://repo.grails.org/grails/core"
 	}
 
