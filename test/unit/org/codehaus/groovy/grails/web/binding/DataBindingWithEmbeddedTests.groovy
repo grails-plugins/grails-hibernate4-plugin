@@ -1,8 +1,5 @@
 package org.codehaus.groovy.grails.web.binding
 
-import static org.hamcrest.CoreMatchers.*
-import static org.junit.Assert.assertThat
-
 import org.codehaus.groovy.grails.orm.hibernate.AbstractGrailsHibernateTests
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.springframework.mock.web.MockHttpServletRequest
@@ -51,12 +48,12 @@ class Author {
 
 		def book = Book.newInstance()
 
-		assertThat "Embedded property before binding", book.author, nullValue()
+		assertNull "Embedded property before binding", book.author
 
 		book.properties = params
 
-		assertThat "Embedded property after binding", book.author, notNullValue()
-		assertThat "Embedded property after binding", book.author.name, equalTo("William Gibson")
+		assertNotNull "Embedded property after binding", book.author
+		assertEquals "Embedded property after binding", "William Gibson", book.author.name
 	}
 
 	void testDataBindingWithEmbeddedPropertyOfAssociation() {
@@ -70,8 +67,8 @@ class Author {
 		def reader = Reader.newInstance()
 		reader.properties = params
 
-		assertThat "Regular association property", reader.currentlyReading.title, equalTo("Pattern Recognition")
-		assertThat "Embedded association property", reader.currentlyReading.author, notNullValue()
-		assertThat "Embedded association property", reader.currentlyReading.author.name, equalTo("William Gibson")
+		assertEquals "Regular association property", "Pattern Recognition", reader.currentlyReading.title
+		assertNotNull "Embedded association property", reader.currentlyReading.author
+		assertEquals "Embedded association property", "William Gibson", reader.currentlyReading.author.name
 	}
 }
