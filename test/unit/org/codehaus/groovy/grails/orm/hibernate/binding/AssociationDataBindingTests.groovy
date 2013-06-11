@@ -18,14 +18,15 @@ import grails.persistence.*
 
 @Entity
 class AssociationBindingReviewer {
-
 	String name
 	Integer age = 25
 }
+
 @Entity
 class AssociationBindingPage {
 	Integer number
 }
+
 @Entity
 class AssociationBindingBook {
 
@@ -35,15 +36,14 @@ class AssociationBindingBook {
 	static belongsTo = [author: AssociationBindingAuthor]
 	static hasMany = [pages:AssociationBindingPage, reviewers:AssociationBindingReviewer]
 }
+
 @Entity
 class AssociationBindingBook2 {
-
 	String title
 }
 
 @Entity
 class AssociationBindingAuthor {
-
 	String name
 	static hasMany = [books: AssociationBindingBook, moreBooks:AssociationBindingBook2]
 }
@@ -335,19 +335,19 @@ class AssociationBindingAuthor {
         def books = author.books
         def theShining = books.find { it.title == 'The Shining' }
         assertNotNull theShining
-        
+
         assertEquals 3, theShining.pages.size()
-        
+
         assertEquals 1, theShining.pages[0].number
         assertEquals 2, theShining.pages[1].number
         assertEquals 3, theShining.pages[2].number
-        
+
         assertEquals 3, theShining.reviewers.size()
-        
+
         assertEquals 'Fred Bloggs', theShining.reviewers['fred'].name
         assertEquals 'Bob Bloggs', theShining.reviewers['bob'].name
         assertEquals 'Chuck Bloggs', theShining.reviewers['chuck'].name
-        
+
         def theStand = books.find { it.title == 'The Stand' }
         assertNotNull theStand
 
@@ -369,7 +369,7 @@ class AssociationBindingAuthor {
 
         assertEquals 3, theShining.reviewers.size()
         assertEquals "Fred Bloggs", theShining.reviewers['fred'].name
-        
+
         theStand = author.books.find { it.title == 'The Stand' }
         assertEquals "The Stand", theStand.title
     }
