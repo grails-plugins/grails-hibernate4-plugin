@@ -1,5 +1,7 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
+import grails.persistence.Entity
+
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.orm.hibernate4.HibernateSystemException
 
@@ -9,9 +11,43 @@ import org.springframework.orm.hibernate4.HibernateSystemException
  */
 class NaturalIdentifierTests extends AbstractGrailsHibernateTests {
 
-	protected void onSetUp() {
-		gcl.parseClass '''
-import grails.persistence.*
+	protected getDomainClasses() {
+		[NaturalAuthor, NaturalBook, NaturalBook2]
+	}
+
+	void testNaturalIdentifier() {
+		def a = new NaturalAuthor(name:"Stephen King").save(flush:true)
+		def b = new NaturalBook(author:a, title:"The Stand").save(flush:true)
+		assertNotNull b
+
+		b.title = "Changed"
+
+		// should fail with an attempt to alter an immutable natural identifier
+		shouldFail(HibernateSystemException) {
+			b.save(flush:true)
+		}
+
+		// should fail with a unique constraint violation exception
+		shouldFail(DataIntegrityViolationException) {
+			new NaturalBook(author:a, title:"The Stand").save(flush:true)
+		}
+	}
+
+	void testMutableNaturalIdentifier() {
+		def a = new NaturalAuthor(name:"Stephen King").save(flush:true)
+		def b = new NaturalBook2(author:a, title:"The Stand").save(flush:true)
+		assertNotNull b
+
+		b.title = "Changed"
+		// mutable identifier so no problem
+		b.save(flush:true)
+
+		// should fail with a unique constraint violation exception
+		shouldFail(DataIntegrityViolationException) {
+			new NaturalBook2(author:a, title:"Changed").save(flush:true)
+		}
+	}
+}
 
 @Entity
 class NaturalAuthor {
@@ -35,50 +71,5 @@ class NaturalBook2 {
 
 	static mapping = {
 		id natural:[properties:['title', 'author'], mutable:true]
-	}
-}
-'''
-	}
-
-	void testNaturalIdentifier() {
-		def Book = ga.getDomainClass("NaturalBook").clazz
-		def Author = ga.getDomainClass("NaturalAuthor").clazz
-
-		def a = Author.newInstance(name:"Stephen King").save(flush:true)
-		def b = Book.newInstance(author:a, title:"The Stand").save(flush:true)
-
-		assertNotNull b
-
-		b.title = "Changed"
-
-		// should fail with an attempt to alter an immutable natural identifier
-		shouldFail(HibernateSystemException) {
-			b.save(flush:true)
-		}
-
-		// should fail with a unique constraint violation exception
-		shouldFail(DataIntegrityViolationException) {
-			Book.newInstance(author:a, title:"The Stand").save(flush:true)
-		}
-	}
-
-	void testMutableNaturalIdentifier() {
-		def Book = ga.getDomainClass("NaturalBook2").clazz
-		def Author = ga.getDomainClass("NaturalAuthor").clazz
-
-		def a = Author.newInstance(name:"Stephen King").save(flush:true)
-
-		def b = Book.newInstance(author:a, title:"The Stand").save(flush:true)
-
-		assertNotNull b
-
-		b.title = "Changed"
-		// mutable identifier so no problem
-		b.save(flush:true)
-
-		// should fail with a unique constraint violation exception
-		shouldFail(DataIntegrityViolationException) {
-			Book.newInstance(author:a, title:"Changed").save(flush:true)
-		}
 	}
 }
