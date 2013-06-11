@@ -1791,31 +1791,33 @@ class HibernateCriteriaBuilderTests extends AbstractGrailsHibernateTests {
 	private Object parse(String groovy, String testClassName, String criteriaClassName, boolean uniqueResult) {
 
 		GroovyClassLoader cl = grailsApplication.getClassLoader()
-		String unique =(uniqueResult?",true":"")
+		String unique = uniqueResult ? ",true" : ""
 		Class clazz = cl.parseClass("""
 package test
 
-import grails.orm.HibernateCriteriaBuilder
-import org.hibernate.SessionFactory
+import grails.orm.*
+import org.hibernate.*
+import org.springframework.core.convert.ConversionService
 
 class $testClassName {
 
 	SessionFactory sf
 	Class tc
+	ConversionService cs
 	def grailsApplication
+
 	Closure test = {
 		def hcb = new HibernateCriteriaBuilder(tc, sf$unique)
+		hcb.conversionService = cs
 		hcb.grailsApplication = grailsApplication
 		return hcb$groovy
 	}
-}
-""")
+}""")
 		GroovyObject go = clazz.newInstance()
 		go.setProperty("sf", sessionFactory)
+		go.setProperty("tc", grailsApplication.getDomainClass(criteriaClassName).clazz)
+		go.setProperty("cs", grailsApplication.mainContext.hibernateDatastore.mappingContext.conversionService)
 		go.setProperty("grailsApplication", grailsApplication)
-
-		Class tc = grailsApplication.getArtefact(DomainClassArtefactHandler.TYPE, criteriaClassName).getClazz()
-		go.setProperty("tc", tc)
 
 		Closure closure = go.getProperty("test")
 		return closure.call()

@@ -84,6 +84,12 @@ abstract class AbstractGrailsHibernateTests extends GroovyTestCase {
 		ctx.registerMockBean("messageSource", new StaticMessageSource())
 
 		def springConfig = new WebRuntimeSpringConfiguration(ctx, gcl)
+
+		def servletContext = new MockServletContext()
+		springConfig.servletContext = servletContext
+		servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, appCtx)
+		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, appCtx)
+
 		doWithRuntimeConfiguration dependentPlugins, springConfig
 
 		ga.setMainContext(springConfig.getUnrefreshedApplicationContext())
@@ -144,10 +150,6 @@ hibernate {
 		if (config != null) {
 			ga.config = config
 		}
-		def servletContext = new MockServletContext()
-		appCtx.setServletContext(servletContext)
-		servletContext.setAttribute(GrailsApplicationAttributes.APPLICATION_CONTEXT, appCtx)
-		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, appCtx)
 		return GrailsWebUtil.bindMockWebRequest(appCtx)
 	}
 

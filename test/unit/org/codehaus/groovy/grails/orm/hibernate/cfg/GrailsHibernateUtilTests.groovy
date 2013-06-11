@@ -1,13 +1,17 @@
 package org.codehaus.groovy.grails.orm.hibernate.cfg
 
 import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_FETCH_SIZE
-import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_TIMEOUT
 import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_READ_ONLY
+import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_TIMEOUT
 
 import org.hibernate.Criteria
 import org.hibernate.FlushMode
+import org.springframework.core.convert.ConversionService
+import org.springframework.core.convert.support.DefaultConversionService
 
 class GrailsHibernateUtilTests extends GroovyTestCase {
+
+	private ConversionService conversionService = new DefaultConversionService()
 
 	void testPopulateArgumentsForCriteria_fetchSize() {
 		assertMockedCriteriaCalledFor("setFetchSize", ARGUMENT_FETCH_SIZE, 10)
@@ -33,7 +37,7 @@ class GrailsHibernateUtilTests extends GroovyTestCase {
 				}
 		] as Criteria
 
-		GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [(keyName): value])
+		GrailsHibernateUtil.populateArgumentsForCriteria(criteria, [(keyName): value], conversionService)
 		assertTrue methodCalled
 	}
 
@@ -49,7 +53,7 @@ class GrailsHibernateUtilTests extends GroovyTestCase {
 				}
 		] as Criteria
 
-		GrailsHibernateUtil.populateArgumentsForCriteria(null, null, criteria, [flushMode: value])
+		GrailsHibernateUtil.populateArgumentsForCriteria(criteria, [flushMode: value], conversionService)
 		assertTrue methodCalled
 	}
 }

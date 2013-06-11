@@ -12,10 +12,12 @@ import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.codehaus.groovy.grails.plugins.MockGrailsPluginManager
 import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.codehaus.groovy.grails.support.MockApplicationContext
+import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.springframework.context.ApplicationContext
 import org.springframework.context.support.StaticMessageSource
+import org.springframework.mock.web.MockServletContext
 import org.springframework.orm.hibernate4.SessionHolder
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.util.Log4jConfigurer
@@ -56,6 +58,8 @@ abstract class GormSpec extends Specification {
 		parentCtx.registerMockBean("messageSource", new StaticMessageSource())
 
 		def springConfig = new WebRuntimeSpringConfiguration(parentCtx, gcl)
+		springConfig.servletContext = new MockServletContext()
+
 		doWithRuntimeConfiguration dependentPlugins, springConfig
 
 		grailsApplication.setMainContext(springConfig.getUnrefreshedApplicationContext())

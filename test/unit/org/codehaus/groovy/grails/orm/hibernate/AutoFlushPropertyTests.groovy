@@ -2,7 +2,6 @@ package org.codehaus.groovy.grails.orm.hibernate
 
 import grails.persistence.Entity
 
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 import org.hibernate.event.service.spi.EventListenerRegistry
 import org.hibernate.event.spi.EventType
 import org.hibernate.event.spi.FlushEvent
@@ -12,6 +11,7 @@ import org.hibernate.service.ServiceRegistry
 class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 
 	private int flushCount = 0
+	private band
 
 	private FlushEventListener listener = new FlushEventListener() {
 		void onFlush(FlushEvent e) {
@@ -32,12 +32,11 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 		[AutoFlushBand]
 	}
 
-	protected void onTearDown() {
-		ConfigurationHolder.config = null
+	protected void onSetUp() {
+		band = new AutoFlushBand(name: 'Tool')
 	}
 
 	void testFlushIsDisabledByDefault() {
-		def band = createBand('Tool')
 		assertNotNull band.save()
 		band.merge()
 		band.delete()
@@ -45,10 +44,8 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testFlushPropertyTrue() {
-		ga.config.grails.gorm.autoFlush = true
-		ga.configChanged()
+		setAutoFlush true
 
-		def band = createBand('Tool')
 		assertNotNull band.save()
 		assertEquals 'Wrong flush count after save', 1, flushCount
 		band.merge()
@@ -58,10 +55,8 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testFlushPropertyFalse() {
-		ga.config.grails.gorm.autoFlush = false
-		ga.configChanged()
+		setAutoFlush false
 
-		def band = createBand('Tool')
 		assertNotNull band.save()
 		band.merge()
 		band.delete()
@@ -69,10 +64,8 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testTrueFlushArgumentOverridesFalsePropertySetting() {
-		ga.config.grails.gorm.autoFlush = true
-		ga.configChanged()
+		setAutoFlush true
 
-		def band = createBand('Tool')
 		assert band.save(flush: true)
 		assertEquals 'Wrong flush count after save', 1, flushCount
 		band.merge(flush: true)
@@ -82,10 +75,8 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testFalseFlushArgumentOverridesTruePropertySetting() {
-		ga.config.grails.gorm.autoFlush = true
-		ga.configChanged()
+		setAutoFlush true
 
-		def band = createBand('Tool')
 		assertNotNull band.save(flush: false)
 		band.merge(flush: false)
 		band.delete(flush: false)
@@ -93,10 +84,8 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testMapWithoutFlushEntryRespectsTruePropertySetting() {
-		ga.config.grails.gorm.autoFlush = true
-		ga.configChanged()
+		setAutoFlush true
 
-		def band = createBand('Tool')
 		assertNotNull band.save([:])
 		assertEquals 'Wrong flush count after save', 1, flushCount
 		band.merge([:])
@@ -106,20 +95,24 @@ class AutoFlushPropertyTests extends AbstractGrailsHibernateTests {
 	}
 
 	void testMapWithoutFlushEntryRespectsFalsePropertySetting() {
-		ga.config.grails.gorm.autoFlush = false
-		ga.configChanged()
+		setAutoFlush false
 
-		def band = createBand('Tool')
 		assertNotNull band.save([:])
 		band.merge([:])
 		band.delete([:])
 		assertEquals 'Wrong flush count', 0, flushCount
 	}
 
-	private createBand(name) {
-		def band = ga.getDomainClass(AutoFlushBand.name).newInstance()
-		band.name = name
-		band
+	private void setAutoFlush(boolean auto) {
+		def config = AutoFlushBand.currentGormInstanceApi().config
+		if (config == null) {
+			config = [:]
+			AutoFlushBand.currentGormInstanceApi().config = config
+		}
+		config.autoFlush = auto
+
+		ga.config.grails.gorm.autoFlush = auto
+		ga.configChanged()
 	}
 }
 
