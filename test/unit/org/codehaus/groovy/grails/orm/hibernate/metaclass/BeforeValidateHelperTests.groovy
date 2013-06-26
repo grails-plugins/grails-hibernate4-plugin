@@ -1,15 +1,13 @@
 package org.codehaus.groovy.grails.orm.hibernate.metaclass
 
+import org.grails.datastore.gorm.support.BeforeValidateHelper
+
 class BeforeValidateHelperTests extends GroovyTestCase {
 
-	def beforeValidateHelper
-
-	void setUp() {
-		super.setUp()
-		beforeValidateHelper = new BeforeValidateHelper()
-	}
+	private BeforeValidateHelper beforeValidateHelper = new BeforeValidateHelper()
 
 	void testNoArgBeforeValidate() {
+
 		def obj = new ClassWithNoArgBeforeValidate()
 		assertEquals 'wrong initial counter value', 0, obj.noArgCounter
 		beforeValidateHelper.invokeBeforeValidate(obj, null)

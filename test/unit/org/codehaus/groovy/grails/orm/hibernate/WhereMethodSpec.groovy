@@ -20,14 +20,14 @@ class WhereMethodSpec extends GormSpec {
 	@Issue('GRAILS-8526')
 	def "Test association query with referenced arguments"() {
 		given:"some people and pets"
-		createPeopleWithPets()
+			createPeopleWithPets()
 
 		when:"A query is built from arguments to a method"
-		def q = getSomePets(name: "Ed")
-		def results = q.list()
+			def q = getSomePets(name: "Ed")
+			def results = q.list()
 
 		then:"The results are correct"
-		results.size() == 3
+			results.size() == 3
 	}
 
 	private getSomePets(args) {
@@ -39,43 +39,44 @@ class WhereMethodSpec extends GormSpec {
 	@Issue('GRAILS-8366')
 	def "Test calling method on RHS of collection size() query"() {
 		given:"some people and pets"
-		createPeopleWithPets()
+			createPeopleWithPets()
 
 		when:"A query that inspects the size() of a collection and calls a method on the RHS is called"
-		def query = Person.where {
-			pets.size() == processPetSize(3)
-		}
+			def query = Person.where {
+				pets.size() == processPetSize(3)
+			}
 
 		then:"The query returns the correct results"
-		query.count() == 1
+			query.count() == 1
 	}
+
 	private processPetSize(int size) { size }
 
 	@Issue('GRAILS-9695')
 	def "Test query with 3 level deep domain association"() {
 		given:"create people and faces"
-		createPeopleWithFaces()
+			createPeopleWithFaces()
 
 		when:"A query that uses criteria 2 levels deep is executed"
-		def results = Nose.withCriteria {
-			face { person { eq 'lastName', 'Simpson' } }
-		}
+			def results = Nose.withCriteria {
+				face { person { eq 'lastName', 'Simpson' } }
+			}
 
 		then:"The results are correct"
-		results.size() == 4
+			results.size() == 4
 
 		when:"A query that queries an association 2 levels deep is executed"
-		def query = Nose.where {
-			face.person.lastName == "Simpson"
-		}
+			def query = Nose.where {
+				face.person.lastName == "Simpson"
+			}
 
 		then:"The correct results are returned"
 			query.count() == 4
 
 		when:"A query that queries an association 2 levels deep is executed via nesting"
-		query = Nose.where {
-			face { person { lastName == "Simpson" } }
-		}
+			query = Nose.where {
+				face { person { lastName == "Simpson" } }
+			}
 
 		then:"The correct results are returned"
 			query.count() == 4
@@ -103,37 +104,36 @@ class WhereMethodSpec extends GormSpec {
 
 		assert Person.count() == 5
 		assert Face.count() == 5
-
 	}
 
 	@Issue('GRAILS-9471')
 	def "Test chaining where queries directly"() {
 		given:"Some people"
-		createPeople()
+			createPeople()
 
 		when:"2 where queries are combined in a sequence"
-		def results = Person.where { lastName == 'Simpson' }.where { firstName == 'Bart'}.list()
+			def results = Person.where { lastName == 'Simpson' }.where { firstName == 'Bart'}.list()
 
 		then:"The correct results are returned"
-		results.size() == 1
-		results[0].firstName == 'Bart'
+			results.size() == 1
+			results[0].firstName == 'Bart'
 	}
 
 	def "Test captured detached criteria instance" () {
 		given:"people and pets"
-		createPeopleWithPets()
+			createPeopleWithPets()
 
 		when:"Another detached criteria variable is captured"
-		def pets = Pet.where {
-			name ==~ "J%"
-		}
+			def pets = Pet.where {
+				name ==~ "J%"
+			}
 
-		def owners = Person.where {
-			pets.size() == 2
-		}
+			def owners = Person.where {
+				pets.size() == 2
+			}
 
 		then:"The results are valid"
-		owners.count() == 2
+			owners.count() == 2
 	}
 
 	def "Test where query with join"() {
@@ -149,13 +149,13 @@ class WhereMethodSpec extends GormSpec {
 
 	def "Test where query with select"() {
 		given:"some people"
-		createPeopleWithPets()
+			createPeopleWithPets()
 
 		when:"A where query is used with an integer value and a long property type"
-		def results = Person.where { lastName =~ '%oggs'}.select('pets').list()
+			def results = Person.where { lastName =~ '%oggs'}.select('pets').list()
 
 		then:"The correct results are returned and type conversion happens as expected"
-		results.size() == 3
+			results.size() == 3
 	}
 
 	@Issue('GRAILS-9447')
@@ -323,12 +323,13 @@ class CallMe {
 			def p = new Person(firstName: "Old", lastName: "Person").save()
 			new Pet(owner:p, birthDate: Date.parse('yyyy-MM-dd','2009-06-01'), name:"Old Dog").save()
 
-		def currentYear = new Date()[Calendar.YEAR]
-			when:"A function is used on the property"
-		def query = Pet.where {
-			year(birthDate) == currentYear
-		}
-		def results = query.list()
+			def currentYear = new Date()[Calendar.YEAR]
+
+		when:"A function is used on the property"
+			def query = Pet.where {
+				year(birthDate) == currentYear
+			}
+			def results = query.list()
 
 		then:"check that the results are correct"
 			results.size() == 7
@@ -336,8 +337,8 @@ class CallMe {
 		when:"A function is used on the property"
 			query = Pet.where {
 				year(birthDate) == 2009
-		}
-		results = query.list()
+			}
+			results = query.list()
 
 		then:"check that the results are correct"
 			results.size() == 1
