@@ -25,7 +25,6 @@ class Hibernate4GrailsPlugin {
 	def version = '4.1.11.M3'
 	def grailsVersion = '2.3 > *'
 	def author = 'Burt Beckwith'
-	def authorEmail = 'bbeckwith@gopivotal.com'
 	def title = 'Hibernate 4 for Grails'
 	def description = 'Provides integration between Grails and Hibernate 4 through GORM'
 	def documentation = 'http://grails.org/plugin/hibernate4'
