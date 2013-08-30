@@ -286,6 +286,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 
 			"transactionManager$suffix"(GrailsHibernateTransactionManager) {
 				sessionFactory = ref("sessionFactory$suffix")
+				dataSource = ref("dataSource$suffix")
 			}
 
 			"hibernateDatastore$suffix"(HibernateDatastore, ref('grailsDomainClassMappingContext'), ref("sessionFactory$suffix"), application.config)
