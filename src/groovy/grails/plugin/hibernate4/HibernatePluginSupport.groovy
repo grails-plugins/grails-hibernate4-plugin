@@ -95,9 +95,9 @@ class HibernatePluginSupport {
 		for (name in application.config.keySet()) {
 			if (name.startsWith('dataSource_')) {
 				datasourceNames << name - 'dataSource_'
-				if( application.config[name].persistenceInterceptor ) {
-                    persistenceInterceptorDatasourceNames << name - 'dataSource_'
-                }
+				if (application.config[name].persistenceInterceptor) {
+					persistenceInterceptorDatasourceNames << name - 'dataSource_'
+				}
 			}
 		}
 
