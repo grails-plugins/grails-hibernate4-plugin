@@ -262,7 +262,6 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 				entityInterceptor = ref("entityInterceptor$suffix")
 
 				eventListeners = [
-					'flush':       new PatchedDefaultFlushEventListener(),
 					'save':        eventTriggeringInterceptor,
 					'save-update': eventTriggeringInterceptor,
 					'pre-load':    eventTriggeringInterceptor,
