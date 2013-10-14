@@ -199,6 +199,25 @@ Using Grails' default cache region factory: 'org.hibernate.cache.ehcache.EhCache
 					}
 				}
 
+				cacheProvider = hibConfig.cache?.region?.factory_class
+				boolean problem = false
+				if (cacheProvider == 'net.sf.ehcache.hibernate.EhCacheRegionFactory') {
+					problem = true
+				}
+				else if (cacheProvider) {
+					try {
+						def cacheClass = getClass().classLoader.loadClass(cacheProvider)
+					}
+					catch (Throwable t) {
+						problem = true
+					}
+				}
+				if (problem) {
+					hibConfig.cache.region.factory_class = 'org.hibernate.cache.ehcache.EhCacheRegionFactory'
+					log.error """WARNING: Your cache provider is set to '${cacheProvider}' in DataSource.groovy, however the class for this provider cannot be found.
+Using Grails' default cache region factory: 'org.hibernate.cache.ehcache.EhCacheRegionFactory'"""
+				}
+
 				def namingStrategy = hibConfig.naming_strategy ?: ImprovedNamingStrategy
 				try {
 					grailsDomainBinder.configureNamingStrategy datasourceName, namingStrategy
