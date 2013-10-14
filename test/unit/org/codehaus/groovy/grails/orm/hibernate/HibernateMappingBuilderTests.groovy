@@ -1,5 +1,7 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
+import groovy.util.GroovyTestCase;
+
 import org.codehaus.groovy.grails.orm.hibernate.cfg.CompositeIdentity
 import org.codehaus.groovy.grails.orm.hibernate.cfg.HibernateMappingBuilder
 import org.codehaus.groovy.grails.orm.hibernate.cfg.MyUserType
@@ -25,7 +27,6 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 //			one cache:true
 //			two ignoreNoteFound:false
 //		}
-//
 //	}
 
 	void testIncludes() {
@@ -208,8 +209,8 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 			}
 		}
 
-        assertEquals "name", mapping.sort.name
-		assertEquals "desc", mapping.order
+		assertEquals "name", mapping.sort.name
+		assertEquals "desc", mapping.sort.direction
 		assertEquals 'name',mapping.getPropertyConfig('things').sort
 
 		mapping = builder.evaluate {
@@ -220,8 +221,8 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 			}
 		}
 
-        assertEquals "name", mapping.sort.name
-		assertEquals "desc", mapping.order
+		assertEquals "name", mapping.sort.name
+		assertEquals "desc", mapping.sort.direction
 		assertEquals 'name',mapping.getPropertyConfig('things').sort
 	}
 
@@ -303,7 +304,7 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 	void testCascadesWithColumnsBlock() {
 		def builder = new HibernateMappingBuilder("Foo")
 		def mapping = builder.evaluate {
-			 things cascade:'save-update'
+			things cascade:'save-update'
 		}
 		assertEquals 'save-update',mapping.getPropertyConfig('things').cascade
 	}
@@ -626,14 +627,13 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 			table 'myTable'
 			version false
 			columns {
-				firstName(
-					column:'First_Name',
-					lazy:true,
-					unique:true,
-					type: java.sql.Clob,
-					length:255,
-					index:'foo',
-					sqlType: 'text')
+				firstName  column:'First_Name',
+				           lazy:true,
+				           unique:true,
+				           type: java.sql.Clob,
+				           length:255,
+				           index:'foo',
+				           sqlType: 'text'
 
 				lastName column:'Last_Name'
 			}
@@ -654,14 +654,13 @@ class HibernateMappingBuilderTests extends GroovyTestCase {
 		def mapping = builder.evaluate {
 			table 'myTable'
 			version false
-			firstName(
-				column:'First_Name',
-				lazy:true,
-				unique:true,
-				type: java.sql.Clob,
-				length:255,
-				index:'foo',
-				sqlType: 'text')
+			firstName  column:'First_Name',
+			           lazy:true,
+			           unique:true,
+			           type: java.sql.Clob,
+			           length:255,
+			           index:'foo',
+			           sqlType: 'text'
 
 			lastName column:'Last_Name'
 		}
