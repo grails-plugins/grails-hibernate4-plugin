@@ -847,7 +847,7 @@ class AuthorClass {
 		publisherPluginMap.getName = { -> 'Publisher' }
 		def publisherPlugin = publisherPluginMap as org.codehaus.groovy.grails.plugins.GrailsPlugin
 
-		def pluginManagerMap = [:]
+		def pluginManagerMap = [setApplicationContext: { }]
 		def myPluginDomainClassNames = ['GadgetClass', 'MyPluginPersonClass']
 		def publisherPluginDomainClassNames = ['AuthorClass']
 		pluginManagerMap.getPluginForClass = { Class clz ->
