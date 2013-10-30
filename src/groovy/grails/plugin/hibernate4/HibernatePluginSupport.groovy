@@ -360,7 +360,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 		def datasourceNames
 		if (event.source instanceof Class) {
 			GrailsDomainClass dc = application.getDomainClass(event.source.name)
-			if (!dc.getMappingStrategy().equalsIgnoreCase(GrailsDomainClass.GORM)) {
+			if (!dc || !GrailsHibernateUtil.isMappedWithHibernate(dc)) {
 				return
 			}
 			grailsDomainBinder.clearMappingCache(event.source)
