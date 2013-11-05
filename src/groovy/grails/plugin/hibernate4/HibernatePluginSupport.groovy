@@ -360,7 +360,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 		def datasourceNames
 		if (event.source instanceof Class) {
 			GrailsDomainClass dc = application.getDomainClass(event.source.name)
-			if (!dc.getMappingStrategy().equalsIgnoreCase(GrailsDomainClass.GORM)) {
+			if (!dc || !GrailsHibernateUtil.isMappedWithHibernate(dc)) {
 				return
 			}
 			grailsDomainBinder.clearMappingCache(event.source)
@@ -391,16 +391,15 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 							proxyIfReloadEnabled = false
 						}
 					}
-
-					if (event.source instanceof Class) {
-						GrailsDomainClass dc = application.getDomainClass(event.source.name)
-						if (!dc.abstract && GrailsHibernateUtil.usesDatasource(dc, datasourceName)) {
-							"${dc.fullName}Validator$suffix"(HibernateDomainClassValidator) {
-								messageSource = ref("messageSource")
-								domainClass = ref("${dc.fullName}DomainClass")
-								sessionFactory = ref("sessionFactory$suffix")
-								grailsApplication = ref("grailsApplication", true)
-							}
+				}
+				if (event.source instanceof Class) {
+					GrailsDomainClass dc = application.getDomainClass(event.source.name)
+					if (!dc.abstract && GrailsHibernateUtil.usesDatasource(dc, datasourceName)) {
+						"${dc.fullName}Validator$suffix"(HibernateDomainClassValidator) {
+							messageSource = ref("messageSource")
+							domainClass = ref("${dc.fullName}DomainClass")
+							sessionFactory = ref("sessionFactory$suffix")
+							grailsApplication = ref("grailsApplication", true)
 						}
 					}
 				}
@@ -412,21 +411,7 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 
 		if (event.source instanceof Class) {
 			def mappingContext = ctx.getBean("grailsDomainClassMappingContext", MappingContext)
-			def entity = mappingContext.addPersistentEntity(event.source)
-
-			def dc = application.getDomainClass(event.source.name)
-			for (String datasourceName in datasourceNames) {
-				if (GrailsHibernateUtil.usesDatasource(dc, datasourceName)) {
-					boolean isDefault = datasourceName == GrailsDomainClassProperty.DEFAULT_DATA_SOURCE
-					String suffix = isDefault ? '' : '_' + datasourceName
-					final validator = ctx.getBean("${entity.name}Validator$suffix", Validator)
-					mappingContext.addEntityValidator(entity, validator)
-					if (isDefault) {
-						GrailsDomainClass domainClass = application.getDomainClass(event.source.name)
-						domainClass.setValidator(validator)
-					}
-				}
-			}
+			def entity = mappingContext.addPersistentEntity(event.source, true)
 		}
 
 		int retryCount = 0
