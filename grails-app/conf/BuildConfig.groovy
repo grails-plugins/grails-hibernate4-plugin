@@ -25,7 +25,10 @@ grails.project.dependency.resolution = {
 
 		String datastoreVersion = '2.0.3.BUILD-SNAPSHOT'
 
-		compile "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion"
+        compile "org.grails:grails-datastore-core:$datastoreVersion", 
+                "org.grails:grails-datastore-gorm:$datastoreVersion", 
+                "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion", 
+                "org.grails:grails-datastore-simple:$datastoreVersion"
 
 		runtime 'cglib:cglib:2.2.2'
 
@@ -39,7 +42,7 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
-		build ':release:3.0.1', ':rest-client-builder:1.0.3', {
+        build(':release:3.0.1', ':rest-client-builder:1.0.3') {
 			export = false
 		}
 
