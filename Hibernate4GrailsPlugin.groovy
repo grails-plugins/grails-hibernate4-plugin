@@ -22,8 +22,8 @@ import org.codehaus.groovy.grails.commons.AnnotationDomainClassArtefactHandler
  */
 class Hibernate4GrailsPlugin {
 
-	def version = '4.1.11.4-SNAPSHOT'
-	def grailsVersion = '2.3 > *'
+	def version = '4.1.11.4'
+	def grailsVersion = '2.3.2 > *'
 	def author = 'Burt Beckwith'
 	def title = 'Hibernate 4 for Grails'
 	def description = 'Provides integration between Grails and Hibernate 4 through GORM'
