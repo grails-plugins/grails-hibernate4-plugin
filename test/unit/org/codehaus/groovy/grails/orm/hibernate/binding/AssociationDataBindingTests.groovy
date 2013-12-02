@@ -45,6 +45,7 @@ class AssociationBindingBook2 {
 class AssociationBindingAuthor {
 	String name
 	static hasMany = [books: AssociationBindingBook, moreBooks:AssociationBindingBook2]
+    List books
 }
 '''
 	}
