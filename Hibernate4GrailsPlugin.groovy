@@ -22,7 +22,7 @@ import org.codehaus.groovy.grails.commons.AnnotationDomainClassArtefactHandler
  */
 class Hibernate4GrailsPlugin {
 
-	def version = '4.1.11.6'
+	def version = '4.1.11.7'
 	def grailsVersion = '2.3.2 > *'
 	def author = 'Burt Beckwith'
 	def title = 'Hibernate 4 for Grails'
