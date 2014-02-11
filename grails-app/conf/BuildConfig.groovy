@@ -23,14 +23,17 @@ grails.project.dependency.resolution = {
 
 	dependencies {
 
-		String datastoreVersion = '2.0.7.RELEASE'
+        String datastoreVersion = '3.0.0.BUILD-SNAPSHOT'
 
-        compile "org.grails:grails-datastore-core:$datastoreVersion", 
-                "org.grails:grails-datastore-gorm:$datastoreVersion", 
-                "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion", 
+        compile "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion", 
                 "org.grails:grails-datastore-simple:$datastoreVersion"
 
+        compile "javax.validation:validation-api:1.0.0.GA" 
 		runtime 'cglib:cglib:2.2.2'
+
+		runtime "org.hibernate:hibernate-ehcache:4.3.1.Final"
+		runtime "org.hibernate:hibernate-validator:4.3.1.Final"
+        runtime "net.sf.ehcache:ehcache-core:2.4.6"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
