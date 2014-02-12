@@ -56,4 +56,5 @@ class TestAuditListener implements PostInsertEventListener, PostDeleteEventListe
 	void onPostInsert(PostInsertEvent event) {}
 	void onPostDelete(PostDeleteEvent event) {}
 	void onSaveOrUpdate(SaveOrUpdateEvent event) {}
+	boolean requiresPostCommitHanding(org.hibernate.persister.entity.EntityPersister ep) { false }
 }
