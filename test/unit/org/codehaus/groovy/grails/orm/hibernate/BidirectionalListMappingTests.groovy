@@ -3,7 +3,7 @@ package org.codehaus.groovy.grails.orm.hibernate
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.orm.hibernate.cfg.DefaultGrailsDomainConfiguration
 import org.hibernate.FetchMode
-import org.hibernate.engine.spi.CascadeStyle
+import org.hibernate.engine.spi.CascadeStyles
 import org.hibernate.mapping.Backref
 import org.hibernate.mapping.Column
 import org.hibernate.mapping.DependantValue
@@ -80,11 +80,10 @@ class TestFaqElement {
 		assertFalse elementsIndexBackref.isSelectable()
 
 		assertNull elementsIndexBackref.getCascade()
-		assertEquals CascadeStyle.NONE, elementsIndexBackref.getCascadeStyle()
+		assertEquals CascadeStyles.NONE, elementsIndexBackref.getCascadeStyle()
 		assertEquals "TestFaqSection.elements", elementsIndexBackref.getCollectionRole()
 		assertEquals 1, elementsIndexBackref.getColumnSpan()
 		assertEquals "TestFaqSection", elementsIndexBackref.getEntityName()
-		assertEquals PropertyGeneration.NEVER, elementsIndexBackref.getGeneration()
 		assertEquals "_elementsIndexBackref", elementsIndexBackref.getName()
 		assertNull elementsIndexBackref.getNodeName()
 		assertNull elementsIndexBackref.getPropertyAccessorName()
@@ -118,11 +117,10 @@ class TestFaqElement {
 		assertFalse elementsBackref.isUpdateable()
 
 		assertNull elementsBackref.getCascade()
-		assertEquals CascadeStyle.NONE, elementsBackref.getCascadeStyle()
+		assertEquals CascadeStyles.NONE, elementsBackref.getCascadeStyle()
 		assertEquals "TestFaqSection.elements", elementsBackref.getCollectionRole()
 		assertEquals 1, elementsBackref.getColumnSpan()
 		assertEquals "TestFaqSection", elementsBackref.getEntityName()
-		assertEquals PropertyGeneration.NEVER, elementsBackref.getGeneration()
 		assertEquals "_TestFaqSection_elementsBackref", elementsBackref.getName()
 		assertNull elementsBackref.getNodeName()
 		assertEquals "TestFaqElement", elementsBackref.getPersistentClass().getClassName()
@@ -167,9 +165,8 @@ class TestFaqElement {
 		assertFalse section.isUpdateable()
 
 		assertEquals "none", section.getCascade()
-		assertEquals CascadeStyle.NONE, section.getCascadeStyle()
+		assertEquals CascadeStyles.NONE, section.getCascadeStyle()
 		assertEquals 1, section.getColumnSpan()
-		assertEquals PropertyGeneration.NEVER, section.getGeneration()
 		assertEquals "section", section.getName()
 	}
 
