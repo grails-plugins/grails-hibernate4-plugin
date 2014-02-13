@@ -25,7 +25,9 @@ grails.project.dependency.resolution = {
 
         String datastoreVersion = '3.0.0.BUILD-SNAPSHOT'
 
-        compile "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion", 
+        compile "org.grails:grails-datastore-core:$datastoreVersion",
+                "org.grails:grails-datastore-gorm:$datastoreVersion",
+                "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion",
                 "org.grails:grails-datastore-simple:$datastoreVersion"
 
         compile "javax.validation:validation-api:1.0.0.GA" 
