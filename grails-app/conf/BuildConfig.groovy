@@ -41,19 +41,10 @@ grails.project.dependency.resolution = {
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
 		}
-
-		test 'org.spockframework:spock-grails-support:0.7-groovy-2.0', {
-			export = false
-		}
 	}
 
 	plugins {
         build(':release:3.0.1', ':rest-client-builder:1.0.3') {
-			export = false
-		}
-
-		test ':spock:0.7', {
-			exclude 'spock-grails-support'
 			export = false
 		}
 
