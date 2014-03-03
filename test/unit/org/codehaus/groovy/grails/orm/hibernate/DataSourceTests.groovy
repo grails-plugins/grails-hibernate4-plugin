@@ -1,52 +1,42 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
-import javax.sql.PooledConnection
-import org.hibernate.engine.jdbc.spi.JdbcWrapper
+import java.sql.Connection
+
+import javax.sql.DataSource
+
 import org.springframework.jdbc.datasource.ConnectionProxy
+import org.springframework.jdbc.datasource.DataSourceUtils
 
 class DataSourceTests extends AbstractGrailsHibernateTests {
 
-	protected void onSetUp() {
-		gcl.parseClass '''
+    protected void onSetUp() {
+        gcl.parseClass '''
 import grails.persistence.Entity
 @Entity
 class Flanglurb {}
 '''
-	}
+    }
 
-	void testConnectionTypes() {
-		def dc = ga.getDomainClass('Flanglurb').clazz
-		dc.withTransaction { s ->
-			def dataSource = appCtx.dataSource
-			def dataSourceUnproxied = appCtx.dataSourceUnproxied
+    void testConnectionTypes() {
+        def dc = ga.getDomainClass('Flanglurb').clazz
+        dc.withTransaction { s ->
+            DataSource dataSource = appCtx.dataSource
+            DataSource dataSourceUnproxied = appCtx.dataSourceUnproxied
 
-			def sessionFactoryConnection = sessionFactory.currentSession.connection()
+            Connection dataSourceConnection = unwrapAndCheckConnection(dataSource.connection)
 
-			assertTrue sessionFactoryConnection instanceof ConnectionProxy
-			sessionFactoryConnection = sessionFactoryConnection.getTargetConnection()
+            Connection sessionFactoryConnection = unwrapAndCheckConnection(sessionFactory.currentSession.connection())
 
-			assertTrue sessionFactoryConnection instanceof PooledConnection
-			sessionFactoryConnection = sessionFactoryConnection.connection
+            Connection unproxiedConnection = unwrapAndCheckConnection(dataSourceUnproxied.connection)
 
-			def dataSourceConnection = dataSource.connection
+            assertTrue sessionFactoryConnection.is(dataSourceConnection)
+            assertFalse unproxiedConnection.is(dataSourceConnection)
+        }
+    }
 
-			assertTrue dataSourceConnection instanceof ConnectionProxy
-			dataSourceConnection = dataSourceConnection.getTargetConnection()
-
-			assertTrue dataSourceConnection instanceof ConnectionProxy
-			dataSourceConnection = dataSourceConnection.getTargetConnection()
-
-			assertTrue dataSourceConnection instanceof PooledConnection
-			dataSourceConnection = dataSourceConnection.connection
-
-			def unproxiedConnection = dataSourceUnproxied.connection
-			assertFalse unproxiedConnection instanceof ConnectionProxy
-			assertFalse unproxiedConnection instanceof JdbcWrapper
-			assertTrue unproxiedConnection instanceof PooledConnection
-			unproxiedConnection = dataSourceUnproxied.connection
-
-			assertTrue sessionFactoryConnection.is(dataSourceConnection)
-			assertFalse unproxiedConnection.is(dataSourceConnection)
-		}
-	}
+    Connection unwrapAndCheckConnection(Connection conn) {
+        conn = DataSourceUtils.getTargetConnection(conn)
+        assert !(conn instanceof ConnectionProxy)
+        return conn
+    }
 }
