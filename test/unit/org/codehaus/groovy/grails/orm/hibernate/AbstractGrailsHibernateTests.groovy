@@ -138,7 +138,7 @@ dataSource {
        testOnBorrow = true
        testWhileIdle = true
        testOnReturn = false
-       jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
+       jdbcInterceptors = "ConnectionState"
        defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
 	}
 }
