@@ -31,11 +31,11 @@ grails.project.dependency.resolution = {
                 "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion",
                 "org.grails:grails-datastore-simple:$datastoreVersion"
 
-        compile "javax.validation:validation-api:1.0.0.GA" 
+        compile "javax.validation:validation-api:1.1.0.Final" 
 		runtime 'cglib:cglib:2.2.2'
 
 		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
-		runtime "org.hibernate:hibernate-validator:$hibernateVersion"
+		runtime "org.hibernate:hibernate-validator:5.0.3.Final"
         runtime "net.sf.ehcache:ehcache-core:2.4.8"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
