@@ -34,11 +34,9 @@ grails.project.dependency.resolution = {
         compile "javax.validation:validation-api:1.0.0.GA" 
 		runtime 'cglib:cglib:2.2.2'
 
-		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
-			exclude group: 'net.sf.ehcache', name 'ehcache-core'
-		}
+		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
 		runtime "org.hibernate:hibernate-validator:$hibernateVersion"
-		runtime "net.sf.ehcache:ehcache:2.8.1"
+        runtime "net.sf.ehcache:ehcache-core:2.4.6"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
