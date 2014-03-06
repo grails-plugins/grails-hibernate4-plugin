@@ -23,37 +23,28 @@ grails.project.dependency.resolution = {
 
 	dependencies {
 
-        String datastoreVersion = '3.0.1.RELEASE'
-        String hibernateVersion = '4.3.1.Final'
+        String datastoreVersion = '3.0.2.RELEASE'
+        String hibernateVersion = '4.3.4.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
                 "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion",
                 "org.grails:grails-datastore-simple:$datastoreVersion"
 
-        compile "javax.validation:validation-api:1.0.0.GA" 
+        compile "javax.validation:validation-api:1.1.0.Final" 
 		runtime 'cglib:cglib:2.2.2'
 
 		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
-		runtime "org.hibernate:hibernate-validator:$hibernateVersion"
-        runtime "net.sf.ehcache:ehcache-core:2.4.6"
+		runtime "org.hibernate:hibernate-validator:5.0.3.Final"
+        runtime "net.sf.ehcache:ehcache-core:2.4.8"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
-		}
-
-		test 'org.spockframework:spock-grails-support:0.7-groovy-2.0', {
-			export = false
 		}
 	}
 
 	plugins {
         build(':release:3.0.1', ':rest-client-builder:1.0.3') {
-			export = false
-		}
-
-		test ':spock:0.7', {
-			exclude 'spock-grails-support'
 			export = false
 		}
 
