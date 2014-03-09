@@ -315,7 +315,12 @@ Using Grails' default naming strategy: '${ImprovedNamingStrategy.name}'"""
 					sessionFactory = ref("sessionFactory$suffix")
 
 					if(hibConfig?.containsKey('singleSession')) {
-						singleSession = hibConfig.singleSession as Boolean
+						if(!hibConfig.singleSession) {
+							// Spring's hibernate4 OSIV doesn't have singleSession property like the hibernate3 specific version
+							def errorMessage = "hibernate4 plugin doesn't have support for singleSession=false OSIV mode. use hibernate plugin instead or set singleSession=true."
+							LOG.error errorMessage
+							throw new IllegalArgumentException(errorMessage)
+						}
 					}
 				}
 
