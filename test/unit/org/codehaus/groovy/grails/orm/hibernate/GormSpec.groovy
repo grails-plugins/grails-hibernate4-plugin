@@ -1,7 +1,7 @@
 package org.codehaus.groovy.grails.orm.hibernate
 
 import grails.util.Metadata
-import grails.util.Holders
+
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.codehaus.groovy.grails.commons.cfg.ConfigurationHelper
@@ -10,6 +10,7 @@ import org.codehaus.groovy.grails.commons.spring.WebRuntimeSpringConfiguration
 import org.codehaus.groovy.grails.plugins.DefaultGrailsPlugin
 import org.codehaus.groovy.grails.plugins.GrailsPluginManager
 import org.codehaus.groovy.grails.plugins.MockGrailsPluginManager
+import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.codehaus.groovy.grails.support.MockApplicationContext
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.hibernate.Session
@@ -97,7 +98,7 @@ abstract class GormSpec extends Specification {
 
 		ExpandoMetaClass.disableGlobally()
 		RequestContextHolder.setRequestAttributes(null)
-		Holders.setPluginManager(null)
+		PluginManagerHolder.setPluginManager(null)
 	}
 
 	protected void unregisterHibernateSession() {
