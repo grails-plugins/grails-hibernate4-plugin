@@ -15,13 +15,12 @@
 package org.codehaus.groovy.grails.commons
 
 import junit.framework.TestCase
-
+import grails.util.*
 import org.codehaus.groovy.grails.orm.hibernate.cfg.DefaultGrailsDomainConfiguration
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
 import org.codehaus.groovy.grails.orm.hibernate.validation.HibernateConstraintsEvaluator
 import org.codehaus.groovy.grails.plugins.GrailsPlugin
 import org.codehaus.groovy.grails.plugins.MockGrailsPluginManager
-import org.codehaus.groovy.grails.plugins.PluginManagerHolder
 import org.codehaus.groovy.grails.validation.ConstrainedProperty
 import org.codehaus.groovy.grails.validation.NullableConstraint
 import org.hibernate.cfg.ImprovedNamingStrategy
@@ -39,7 +38,7 @@ class GrailsDomainConfigurationUtilTests extends TestCase {
 		super.setUp()
 		ExpandoMetaClass.enableGlobally()
 		MockGrailsPluginManager pluginManager = new MockGrailsPluginManager()
-		PluginManagerHolder.setPluginManager(pluginManager)
+		Holders.setPluginManager(pluginManager)
 		pluginManager.registerMockPlugin([getName: { -> 'hibernate4' }] as GrailsPlugin)
 	}
 
@@ -50,7 +49,7 @@ class GrailsDomainConfigurationUtilTests extends TestCase {
 		grailsDomainBinder.NAMING_STRATEGIES.clear()
 		grailsDomainBinder.NAMING_STRATEGIES.put(
 			GrailsDomainClassProperty.DEFAULT_DATA_SOURCE, ImprovedNamingStrategy.INSTANCE)
-		PluginManagerHolder.setPluginManager(null)
+		Holders.setPluginManager(null)
 	}
 
 	void testIsNotConfigurational() {
