@@ -1,8 +1,8 @@
 package org.codehaus.groovy.grails.orm.hibernate.cfg
 
-import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_FETCH_SIZE
-import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_READ_ONLY
-import static org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil.ARGUMENT_TIMEOUT
+import static org.codehaus.groovy.grails.orm.hibernate.query.HibernateQueryConstants.ARGUMENT_FETCH_SIZE
+import static org.codehaus.groovy.grails.orm.hibernate.query.HibernateQueryConstants.ARGUMENT_READ_ONLY
+import static org.codehaus.groovy.grails.orm.hibernate.query.HibernateQueryConstants.ARGUMENT_TIMEOUT
 
 import org.hibernate.Criteria
 import org.hibernate.FlushMode
