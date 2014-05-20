@@ -29,7 +29,11 @@ grails.project.dependency.resolution = {
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
                 "org.grails:grails-datastore-gorm-hibernate4:$datastoreVersion",
-                "org.grails:grails-datastore-simple:$datastoreVersion"
+                "org.grails:grails-datastore-simple:$datastoreVersion", {
+                exclude group:'org.springframework', name:'spring-context'
+                exclude group:'org.springframework', name:'spring-core'
+                exclude group:'org.springframework', name:'spring-beans'
+        }
 
         compile "javax.validation:validation-api:1.1.0.Final" 
 		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
