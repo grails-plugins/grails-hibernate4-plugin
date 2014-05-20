@@ -3,6 +3,7 @@ set -e
 rm -rf *.zip
 ./grailsw refresh-dependencies --non-interactive
 ./grailsw test-app --non-interactive
+./grailsw package-plugin --non-interactive
 
 filename=$(find . -name "grails-*.zip" | head -1)
 filename=$(basename $filename)
