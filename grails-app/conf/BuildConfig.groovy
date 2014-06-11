@@ -41,12 +41,17 @@ grails.project.dependency.resolution = {
                 exclude group:'org.grails', name:'grails-bootstrap'
                 exclude group:'org.grails', name:'grails-core'                
                 exclude group:'org.grails', name:'grails-async'                
+                exclude 'javax.transaction:jta'
         }
 
         compile "javax.validation:validation-api:1.1.0.Final" 
-		runtime "org.hibernate:hibernate-ehcache:$hibernateVersion"
-		runtime "org.hibernate:hibernate-validator:5.0.3.Final"
-        runtime "net.sf.ehcache:ehcache-core:2.4.8"
+
+        runtime "org.hibernate:hibernate-validator:5.0.3.Final"
+        runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
+            exclude group: 'net.sf.ehcache', name: 'ehcache-core'
+            exclude group: 'org.jboss.logging', name:'jboss-logging-annotations'
+        }
+        runtime "net.sf.ehcache:ehcache:2.8.1"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
@@ -54,7 +59,7 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
-        build(':release:3.0.1', ':rest-client-builder:1.0.3') {
+        build(':release:3.0.1', ':rest-client-builder:2.0.1') {
 			export = false
 		}
 
