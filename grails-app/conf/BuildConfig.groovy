@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
 
 	dependencies {
 
-        String datastoreVersion = '3.1.0.RELEASE'
+        String datastoreVersion = '3.1.1.RELEASE'
         String hibernateVersion = '4.3.5.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
@@ -51,7 +51,7 @@ grails.project.dependency.resolution = {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
             exclude group: 'org.jboss.logging', name:'jboss-logging-annotations'
         }
-        runtime "net.sf.ehcache:ehcache:2.8.1"
+        runtime "net.sf.ehcache:ehcache-core:2.4.8"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
