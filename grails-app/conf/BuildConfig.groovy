@@ -43,10 +43,17 @@ grails.project.dependency.resolution = {
                 exclude group:'org.grails', name:'grails-async'                
                 exclude 'javax.transaction:jta'
         }
+        // Required by Hibernate Validator
+        // Java EE 6 require that EL 2.2 be provided.
+        // In addition to all Java EE 6 application servers,
+        // Tomcat 7 and Jetty 7 also include it.
+        // Pretty much every (not terribly old) servlet container
+        // and application server includes it, so it's okay to be provided.
+        // If it's scoped compile, it will conflict with what the container
+        // provides and cause classloading problems.
+        provided 'javax.el:javax.el-api:2.2.4'
 
-        compile "javax.validation:validation-api:1.1.0.Final" 
-
-        runtime "org.hibernate:hibernate-validator:5.0.3.Final"
+        runtime "org.hibernate:hibernate-validator:5.1.1.Final"
         runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
             exclude group: 'org.jboss.logging', name:'jboss-logging-annotations'
