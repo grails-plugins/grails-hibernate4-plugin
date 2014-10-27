@@ -105,6 +105,7 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 		nestedWithNewSessionWithNewTransactionLoop()
 	}
 
+	/*
 	void testNestedCustomWithNewSessionWithNewTransaction() {
 		// Will succeed because using custom safeWithNewSession
 		nestedSafeWithNewSessionWithNewTransactionLoop()
@@ -116,6 +117,7 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 		closeSession()
 		nestedSafeWithNewSessionWithNewTransactionLoop()
 	}
+	*/
 
 	void testExceptionInNestedCustomWithNewSessionWithNewTransaction() {
 		shouldFail {
