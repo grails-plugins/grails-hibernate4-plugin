@@ -15,31 +15,6 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 		[AuthorLeak, BookLeak]
 	}
 
-	private void safeWithNewSession(Closure callable) {
-		GrailsHibernateTemplate template = new GrailsHibernateTemplate(sessionFactory, grailsApplication)
-		SessionHolder sessionHolder = TransactionSynchronizationManager.getResource(sessionFactory)
-		if (sessionHolder) {
-			// This is the only way to force hibernate to actually close the db connection in the new session
-			TransactionSynchronizationManager.unbindResource(sessionFactory)
-		}
-		def sf = sessionFactory
-		Session previousSession = sessionHolder?.session
-		try {
-			template.execute new GrailsHibernateTemplate.HibernateCallback() {
-				def doInHibernate(Session session) {
-					TransactionSynchronizationManager.bindResource(sf, new SessionHolder(session))
-					callable(session)
-				}
-			}
-		}
-		finally {
-			// This is the only way to force hibernate to actually close the db connection in the new session
-			TransactionSynchronizationManager.unbindResource(sf)
-			if (sessionHolder) {
-				TransactionSynchronizationManager.bindResource(sf, sessionHolder)
-			}
-		}
-	}
 
 	private void nestedWithNewSessionWithNewTransactionLoop(boolean unbindSessionHolder = false) {
 		100.times { i ->
@@ -70,7 +45,7 @@ class WithTransactionConnectionCleanupTests extends AbstractGrailsHibernateTests
 	private void nestedSafeWithNewSessionWithNewTransactionLoop(boolean withException = false) {
 		100.times { i ->
 			def currentSession = session
-			safeWithNewSession { session ->
+			AuthorLeak.withNewSession { session ->
 				assert currentSession != session
 				Long authorId = AuthorLeak.withTransaction {
 					AuthorLeak author = new AuthorLeak(firstName: 'John', lastName: "Doe ${i}")
