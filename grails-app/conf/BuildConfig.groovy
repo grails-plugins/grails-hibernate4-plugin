@@ -54,7 +54,7 @@ grails.project.dependency.resolution = {
         // provides and cause classloading problems.
         provided 'javax.el:javax.el-api:2.2.4'
 
-        runtime "org.hibernate:hibernate-validator:5.1.1.Final"
+        runtime "org.hibernate:hibernate-validator:5.1.3.Final"
         runtime "org.hibernate:hibernate-ehcache:$hibernateVersion", {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
             exclude group: 'org.jboss.logging', name:'jboss-logging-annotations'
