@@ -59,7 +59,7 @@ grails.project.dependency.resolution = {
             exclude group: 'net.sf.ehcache', name: 'ehcache-core'
             exclude group: 'org.jboss.logging', name:'jboss-logging-annotations'
         }
-        runtime "net.sf.ehcache:ehcache-core:2.4.8"
+       runtime "net.sf.ehcache:ehcache:2.9.0"
 
 		runtime 'org.jboss.logging:jboss-logging:3.1.0.GA', {
 			excludes 'jboss-logmanager', 'log4j', 'slf4j-api'
