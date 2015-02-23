@@ -1,6 +1,6 @@
 if(System.getenv('TRAVIS_BRANCH')) {
     grails.project.repos.grailsCentral.username = System.getenv("GRAILS_CENTRAL_USERNAME")
-    grails.project.repos.grailsCentral.password = System.getenv("GRAILS_CENTRAL_PASSWORD")    
+    grails.project.repos.grailsCentral.password = System.getenv("GRAILS_CENTRAL_PASSWORD")
 }
 
 grails.project.work.dir = 'target'
@@ -30,7 +30,7 @@ grails.project.dependency.resolution = {
 	dependencies {
 
         String datastoreVersion = '3.1.4.BUILD-SNAPSHOT'
-        String hibernateVersion = '4.3.7.Final'
+        String hibernateVersion = '4.3.8.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
@@ -40,8 +40,8 @@ grails.project.dependency.resolution = {
                 exclude group:'org.springframework', name:'spring-core'
                 exclude group:'org.springframework', name:'spring-beans'
                 exclude group:'org.grails', name:'grails-bootstrap'
-                exclude group:'org.grails', name:'grails-core'                
-                exclude group:'org.grails', name:'grails-async'                
+                exclude group:'org.grails', name:'grails-core'
+                exclude group:'org.grails', name:'grails-async'
                 exclude 'javax.transaction:jta'
         }
         // Required by Hibernate Validator
