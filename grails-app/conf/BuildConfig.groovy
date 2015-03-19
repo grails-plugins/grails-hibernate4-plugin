@@ -29,7 +29,7 @@ grails.project.dependency.resolution = {
 
 	dependencies {
 
-        String datastoreVersion = '3.1.4.BUILD-SNAPSHOT'
+        String datastoreVersion = '3.1.4.RELEASE'
         String hibernateVersion = '4.3.8.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
@@ -67,7 +67,7 @@ grails.project.dependency.resolution = {
 	}
 
 	plugins {
-        build(':release:3.0.1', ':rest-client-builder:2.0.3') {
+        build(':release:3.1.0', ':rest-client-builder:2.1.0') {
 			export = false
 		}
 
