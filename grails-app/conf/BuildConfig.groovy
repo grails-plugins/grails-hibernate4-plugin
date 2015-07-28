@@ -29,8 +29,8 @@ grails.project.dependency.resolution = {
 
 	dependencies {
 
-        String datastoreVersion = '3.1.4.RELEASE'
-        String hibernateVersion = '4.3.8.Final'
+        String datastoreVersion = '3.1.5.RELEASE'
+        String hibernateVersion = '4.3.10.Final'
 
         compile "org.grails:grails-datastore-core:$datastoreVersion",
                 "org.grails:grails-datastore-gorm:$datastoreVersion",
